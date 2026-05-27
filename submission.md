@@ -52,3 +52,56 @@ Todo model correctly associates with a user
 Everything in general looked quite sufficient.  Made some small changes. Edited one of the tests (about the marking of other user's todos).  
 Added toggle priority action.
 Changed some wording that I thought sounded odd, and deleted certain portions that I thought were unecessary.  
+
+# Implement step 1 of the plan we just discussed (running the migration for user ownership). Go ahead and apply the changes.
+
+
+Here is a simplified, cleaner version of your prompt rewrite. It keeps the exact structure but trims the noise so it is punchy and easy for an AI to digest instantly.
+
+---
+
+### **Bad prompt:**
+
+> fix the bug in todos
+
+---
+
+### **Good prompt:**
+
+**Context:**
+
+* `app/controllers/todos_controller.rb` (specifically `create`, `update`, and `todo_params` on line 58)
+* `app/views/todos/_form.html.erb` (the shared form template)
+* `db/schema.rb` (confirms a `due_date:datetime` column already exists in the database)
+
+**Task:**
+Expose the existing `due_date` field so users can set and edit a deadline when creating or updating a todo.
+
+**Expected vs. Actual:**
+
+* **Expected:** Users can select a due date in the form, and saving it updates the database.
+* **Actual:** The field is missing entirely from `_form.html.erb`, and `todo_params` silently strips `due_date` because it only permits `[:description]`.
+
+**Constraints:**
+
+* Only modify the controller, the form view, and the relevant test files.
+* Do not add any new gems.
+* Use the Rails `date_field` form helper for the input.
+* Maintain the existing strong-parameter style by extending the permitted array.
+
+**Done when:**
+
+1. Running `bundle exec rspec` passes, including a new test verifying a POST request saves `due_date: "2026-12-01"`.
+2. Manual browser testing confirms `/todos/new` displays a native date picker, saves the selection, and displays it on the todo's page.
+
+
+# Part 4
+
+
+### Turbo Streams Explanation
+
+A Turbo Stream lets the server update a specific DOM element without a full page reload. The response MIME type is `text/vnd.turbo-stream.html` (vs `text/html` for a normal response). In the controller you add `format.turbo_stream` inside `respond_to`, and the matching view lives at `app/views/todos/<action>.turbo_stream.erb`.
+
+There are no existing Turbo Stream responses in this project — confirmed by grepping `app/` for `format.turbo_stream` and `*.turbo_stream.erb`, both returned nothing.
+
+**Verified against Turbo source (`src/core/drive/form_submission.ts`):** Turbo automatically appends `text/vnd.turbo-stream.html` to the `Accept` header on non-GET form submissions, which is why `format.turbo_stream` only fires on POST/PATCH, never on a plain link click.
