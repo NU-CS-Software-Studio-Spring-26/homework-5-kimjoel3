@@ -105,3 +105,11 @@ A Turbo Stream lets the server update a specific DOM element without a full page
 There are no existing Turbo Stream responses in this project — confirmed by grepping `app/` for `format.turbo_stream` and `*.turbo_stream.erb`, both returned nothing.
 
 **Verified against Turbo source (`src/core/drive/form_submission.ts`):** Turbo automatically appends `text/vnd.turbo-stream.html` to the `Accept` header on non-GET form submissions, which is why `format.turbo_stream` only fires on POST/PATCH, never on a plain link click.
+
+## Plan
+
+Write migration db/migrate/20260526000003_add_high_priority_to_todos.rb adding high_priority boolean, default: false, null: false
+Add high_priority: false to both fixtures in test/fixtures/todos.yml
+Run bin/rails db:migrate
+Verify db/schema.rb shows the new column
+Commit: "Add high_priority column to todos as data layer for priority filtering feature"
