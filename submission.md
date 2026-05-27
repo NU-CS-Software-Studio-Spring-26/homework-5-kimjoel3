@@ -106,6 +106,12 @@ There are no existing Turbo Stream responses in this project — confirmed by gr
 
 **Verified against Turbo source (`src/core/drive/form_submission.ts`):** Turbo automatically appends `text/vnd.turbo-stream.html` to the `Accept` header on non-GET form submissions, which is why `format.turbo_stream` only fires on POST/PATCH, never on a plain link click.
 
+
+
+
+PR Link: [https://github.com/NU-CS-Software-Studio-Spring-26/nu-cs-software-studio-spring-26-homework-5-hw5/pull/16]
+
+Already in PR
 ## Plan
 
 Write migration db/migrate/20260526000003_add_high_priority_to_todos.rb adding high_priority boolean, default: false, null: false
