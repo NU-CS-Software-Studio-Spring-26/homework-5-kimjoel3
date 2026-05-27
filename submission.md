@@ -113,3 +113,12 @@ Add high_priority: false to both fixtures in test/fixtures/todos.yml
 Run bin/rails db:migrate
 Verify db/schema.rb shows the new column
 Commit: "Add high_priority column to todos as data layer for priority filtering feature"
+
+## TEST
+
+Error:
+TodosControllerTest#test_should_show_todo:
+ActionView::Template::Error: undefined method 'high_priority?' for an instance of Todo
+    app/views/todos/_todo.html.erb:5
+    app/views/todos/show.html.erb:3
+    test/controllers/todos_controller_test.rb:27:in 'block in <class:TodosControllerTest>'
